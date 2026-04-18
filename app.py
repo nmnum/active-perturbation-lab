@@ -427,7 +427,7 @@ def render_selection_bias(data, budget_pct, active_strategies):
     fig.update_xaxes(showgrid=True, gridcolor="#eeeeee")
     fig.update_yaxes(showgrid=True, gridcolor="#eeeeee")
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
     if mean_vals:
         st.caption("Mean effect size of selected perturbations at 50% budget: " +
