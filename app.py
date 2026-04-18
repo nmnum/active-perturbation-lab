@@ -341,7 +341,7 @@ def render_metric_trajectories(data, active_strategies):
     # 30% budget reference line
     for col_idx in [1, 2]:
         fig.add_vline(x=30, line_dash="dot", line_color="#999999",
-                      line_width=1, row=1, col=col_idx)
+                      line_width=1, row=1, col=col_idx) # type: ignore
 
     fig.add_annotation(x=31, y=0.43, text="30% budget", showarrow=False,
                        font=dict(size=11, color="#888888"), xref="x", yref="y")
