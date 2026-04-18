@@ -10,7 +10,7 @@ A proof-of-concept active learning loop on the Norman et al. 2019 K562 CRISPR sc
 
 Standard UCB acquisition introduces systematic **selection bias** toward high-effect perturbations. By 30% budget all strategies achieve Spearman R ≈ 0.94 on unseen perturbations. But UCB exhausts the high-effect set, leaving low-effect perturbations unobserved - the GP extrapolates poorly to this regime, and Spearman R collapses to ~0.70 at 90% budget. Random selection, sampling uniformly, reaches ~0.99.
 
-This identifies the **coverage–exploitation tradeoff** as the central design question for perturbation active learning - a gap not addressed by GeneDisco, NAIAD, or sequential OED.
+This identifies the **coverage-exploitation tradeoff** as the central design question for perturbation active learning - a gap not addressed by GeneDisco, NAIAD, or sequential OED.
 
 ---
 

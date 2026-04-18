@@ -211,12 +211,12 @@ def render_header(is_synthetic):
         "**Can adaptive selection reduce the number of CRISPR experiments needed "
         "to map a perturbation landscape?** This demo shows an active learning loop "
         "on the Norman et al. 2019 K562 CRISPR screen (105 single-gene knockouts). "
-        "A GP surrogate in PCA latent space selects which perturbations to observe next — "
+        "A GP surrogate in PCA latent space selects which perturbations to observe next - "
         "revealing a systematic failure of standard UCB acquisition at high budgets."
     )
     if is_synthetic:
         st.info(
-            "**Demo mode** — `active_learning_results.json` not found. "
+            "**Demo mode** - `active_learning_results.json` not found. "
             "Showing synthetic data that reproduces the paper's key numbers. "
             "Run `python generate_site_data.py` with the Norman et al. h5ad file "
             "to load real simulation results.",
@@ -386,7 +386,7 @@ def render_selection_bias(data, budget_pct, active_strategies):
         f"Effect-size distribution of perturbations selected by each strategy at "
         f"**{budget_pct}% budget** (repeat 0). "
         "UCB preferentially selects high-effect perturbations, leaving the low-effect "
-        "regime unobserved — the 'smoking gun' for the Spearman R collapse."
+        "regime unobserved - the 'smoking gun' for the Spearman R collapse."
     )
 
     # Use pre-computed 50% data from JSON for the histogram; adjust label
@@ -439,7 +439,7 @@ def render_selection_bias(data, budget_pct, active_strategies):
 # ---------------------------------------------------------------------------
 
 def render_latent_space(data, budget_pct, active_strategies):
-    st.subheader("PCA latent space — acquisition playground")
+    st.subheader("PCA latent space - acquisition playground")
     st.caption(
         "Each point is a perturbation, positioned by its first two principal components "
         "of mean expression. Colour = true effect size (gray → coral = low → high). "
