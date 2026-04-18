@@ -226,7 +226,7 @@ def run_all_strategies(
 
     for repeat in range(n_repeats):
         rng = np.random.RandomState(repeat * 13 + 7)
-        seed_idx = list(rng.choice(all_idx, size=seed_size, replace=False))
+        seed_idx = [int(i) for i in rng.choice(all_idx, size=seed_size, replace=False)]
 
         for strategy in strategies:
             # Reset rng to same state: same seed set, independent runs per strategy

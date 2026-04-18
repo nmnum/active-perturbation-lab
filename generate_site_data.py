@@ -13,7 +13,7 @@ Usage
     python generate_site_data.py [--data PATH] [--out PATH] [--repeats N]
 
 Defaults:
-    --data     /tmp/norman_data/NormanWeissman2019_filtered.h5ad
+    --data     norman_data/NormanWeissman2019_filtered.h5ad
     --out      active_learning_results.json
     --repeats  5
 """
@@ -34,6 +34,16 @@ warnings.filterwarnings("ignore")
 from model_utils import build_pca_space, compute_effect_sizes
 from active_learner import run_all_strategies, selection_bias_at_50pct
 
+class NumpyEncoder(json.JSONEncoder):
+    """Custom encoder to handle NumPy types during JSON serialisation."""
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return super(NumpyEncoder, self).default(obj)
 
 # ---------------------------------------------------------------------------
 # CLI
@@ -41,7 +51,7 @@ from active_learner import run_all_strategies, selection_bias_at_50pct
 
 def parse_args():
     p = argparse.ArgumentParser(description="Generate active_learning_results.json")
-    p.add_argument("--data", default="/tmp/norman_data/NormanWeissman2019_filtered.h5ad",
+    p.add_argument("--data", default="./NormanWeissman2019_filtered.h5ad",
                    help="Path to NormanWeissman2019_filtered.h5ad")
     p.add_argument("--out", default="active_learning_results.json",
                    help="Output JSON path")
@@ -267,7 +277,7 @@ def main():
 
     out_path = Path(args.out)
     with open(out_path, "w") as f:
-        json.dump(payload, f, indent=2)
+        json.dump(payload, f, indent=2, cls=NumpyEncoder)
 
     size_mb = out_path.stat().st_size / 1e6
     elapsed = time.time() - t0

@@ -244,6 +244,12 @@ def render_sidebar(data):
         beta_div = st.slider("β_div (diversity)", 0.0, 3.0,
                              float(meta.get("beta_div", 1.5)), 0.1)
 
+        st.info("💡 To change these weights, you must re-run the `generate_site_data.py` script.")
+        st.divider()
+
+    # --- INTERACTIVE CONTROLS ---
+        st.caption("Interactive View for PCA latent space")
+
         st.subheader("Budget")
         max_budget = int(meta.get("n_rounds", 17)) * int(meta.get("budget_step", 5)) \
                      + int(meta.get("seed_size", 10))
@@ -351,7 +357,7 @@ def render_metric_trajectories(data, active_strategies):
     fig.update_xaxes(showgrid=True, gridcolor="#eeeeee")
     fig.update_yaxes(showgrid=True, gridcolor="#eeeeee")
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
     # UCB collapse callout
     if "ucb_only" in active_strategies:
@@ -501,10 +507,12 @@ def render_latent_space(data, budget_pct, active_strategies):
                 line=dict(width=2, color=COLOURS[strategy]),
                 showscale=True,
                 colorbar=dict(
-                    title="Effect size",
+                    title=dict(
+                        text="Effect Size",
+                        font=dict(size=10) 
+                    ),
                     thickness=10,
                     len=0.7,
-                    titlefont=dict(size=10),
                     tickfont=dict(size=9),
                 ) if strategy == active_strategies[-1] else None,
             ),
@@ -528,7 +536,7 @@ def render_latent_space(data, budget_pct, active_strategies):
             yaxis=dict(title="PC2", showgrid=True, gridcolor="#eeeeee", zeroline=False),
             plot_bgcolor="white", paper_bgcolor="rgba(0,0,0,0)",
         )
-        col_ui.plotly_chart(fig, use_container_width=True)
+        col_ui.plotly_chart(fig, width='stretch')
 
 
 # ---------------------------------------------------------------------------
@@ -547,31 +555,31 @@ question: given a budget of experiments, which perturbations should be screened?
 
 **Key finding: UCB collapse**
 
-Standard UCB acquisition — designed for *target discovery* (find the strongest
-perturbations fast) — introduces systematic selection bias. It preferentially
+Standard UCB acquisition - designed for *target discovery* (find the strongest
+perturbations fast) - introduces systematic selection bias. It preferentially
 selects high-effect perturbations, leaving the low-effect regime unobserved.
 By ~30% budget, UCB achieves Spearman R ≈ 0.94 on unseen perturbations.
 But as it exhausts the high-effect set, the remaining unobserved perturbations
 are dominated by low-effect knockouts that the GP (trained on high-effect data)
-extrapolates to poorly — causing Spearman R to collapse to ~0.70 at 90% budget.
+extrapolates to poorly - causing Spearman R to collapse to ~0.70 at 90% budget.
 
 **Coverage–exploitation tradeoff**
 
 The right acquisition function depends on the experimental objective:
-- *Target discovery*: UCB is appropriate — find the strongest perturbations quickly.
-- *Landscape recovery*: diversity is essential — characterise the full effect-size range.
+- *Target discovery*: UCB is appropriate - find the strongest perturbations quickly.
+- *Landscape recovery*: diversity is essential - characterise the full effect-size range.
 
 **Next steps**
 
 1. **Model-native uncertainty**: Replace the PCA+GP surrogate with MC dropout or
-   deep ensembles on CPA's perturbation embedding layer — the same model that
+   deep ensembles on CPA's perturbation embedding layer - the same model that
    predicts also decides what to measure.
 
 2. **SP-FM uncertainty**: The lab's SP-FM (ICLR 2026) conditions the base
-   distribution on the perturbation — uncertainty over this base is a natural
+   distribution on the perturbation - uncertainty over this base is a natural
    acquisition signal.
 
-3. **Spatial perturbation selection**: Extend to MintFlow — actively select which
+3. **Spatial perturbation selection**: Extend to MintFlow - actively select which
    tissue niches to perturb, guided by NicheCompass niche uncertainty.
         """)
 
