@@ -2,17 +2,15 @@
 
 **Can adaptive selection reduce the number of CRISPR experiments needed to map a perturbation landscape?**
 
-A proof-of-concept active learning loop on the Norman et al. 2019 K562 CRISPR screen (105 single-gene knockouts). A Gaussian process surrogate in PCA latent space selects which perturbations to observe next — revealing a systematic failure of standard UCB acquisition at high budgets.
-
-Interactive demo: [autodiscovery-lab.lovable.app](https://autodiscovery-lab.lovable.app/)
+A proof-of-concept active learning loop on the Norman et al. 2019 K562 CRISPR screen (105 single-gene knockouts). A Gaussian process surrogate in PCA latent space selects which perturbations to observe next - revealing a systematic failure of standard UCB acquisition at high budgets.
 
 ---
 
 ## Key finding: UCB collapse
 
-Standard UCB acquisition introduces systematic **selection bias** toward high-effect perturbations. By 30% budget all strategies achieve Spearman R ≈ 0.94 on unseen perturbations. But UCB exhausts the high-effect set, leaving low-effect perturbations unobserved — the GP extrapolates poorly to this regime, and Spearman R collapses to ~0.70 at 90% budget. Random selection, sampling uniformly, reaches ~0.99.
+Standard UCB acquisition introduces systematic **selection bias** toward high-effect perturbations. By 30% budget all strategies achieve Spearman R ≈ 0.94 on unseen perturbations. But UCB exhausts the high-effect set, leaving low-effect perturbations unobserved - the GP extrapolates poorly to this regime, and Spearman R collapses to ~0.70 at 90% budget. Random selection, sampling uniformly, reaches ~0.99.
 
-This identifies the **coverage–exploitation tradeoff** as the central design question for perturbation active learning — a gap not addressed by GeneDisco, NAIAD, or sequential OED.
+This identifies the **coverage–exploitation tradeoff** as the central design question for perturbation active learning - a gap not addressed by GeneDisco, NAIAD, or sequential OED.
 
 ---
 
@@ -25,7 +23,7 @@ active_perturbation_lab/
 ├── generate_site_data.py     # Runs simulation, exports active_learning_results.json
 ├── app.py                    # Streamlit interactive demo
 ├── requirements.txt
-└── active_learning_results.json   # (generated — not tracked in git)
+└── active_learning_results.json   # (generated)
 ```
 
 ### Architectural note
@@ -82,7 +80,7 @@ The app runs in **demo mode** (synthetic data reproducing the paper's numbers) i
 
 ## Evaluation metrics
 
-- **Spearman R**: Rank correlation between predicted and true perturbation effect sizes (L2 from control mean) across all currently *unobserved* perturbations — standard in CPA/GEARS benchmarks.
+- **Spearman R**: Rank correlation between predicted and true perturbation effect sizes (L2 from control mean) across all currently *unobserved* perturbations - standard in CPA/GEARS benchmarks.
 - **Top-20 DEG recovery**: Fraction of true top-20 differentially expressed genes per perturbation correctly identified in the GP's predicted top-20.
 
 Both metrics are computed on the unobserved set only at each round.
@@ -91,11 +89,11 @@ Both metrics are computed on the unobserved set only at each round.
 
 ## Next steps
 
-1. **Model-native uncertainty** — replace PCA+GP with MC dropout or deep ensembles on CPA's perturbation embedding layer. Same acquisition function, calibrated uncertainty signal from the model that predicts.
+1. **Model-native uncertainty** - replace PCA+GP with MC dropout or deep ensembles on CPA's perturbation embedding layer. Same acquisition function, calibrated uncertainty signal from the model that predicts.
 
-2. **SP-FM uncertainty** — the Lotfollahi lab's SP-FM (ICLR 2026) conditions the base distribution on the perturbation; uncertainty over this base is a natural acquisition signal for active selection.
+2. **SP-FM uncertainty** - the Lotfollahi lab's SP-FM (ICLR 2026) conditions the base distribution on the perturbation; uncertainty over this base is a natural acquisition signal for active selection.
 
-3. **Spatial perturbation selection** — extend to MintFlow: actively select which tissue niches to perturb, guided by NicheCompass niche uncertainty.
+3. **Spatial perturbation selection** - extend to MintFlow: actively select which tissue niches to perturb, guided by NicheCompass niche uncertainty.
 
 ---
 
